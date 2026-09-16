@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bosnia 2026 | Ahmad, Samir and Mirza</title>
+<meta name="description" content="Trip companion for the Bosnia road trip, 19 September to 4 October 2026. Flights, car rental, beds, food, mosques and drive times from every base.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕌</text></svg>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,640;1,9..144,500&display=swap">
+<style>
+:root{
+  --bg:#eef1ee; --card:#ffffff; --ink:#17241e; --muted:#5c6b63; --line:#d7ddd7;
+  --pine:#1e4d3f; --pine-ink:#f2f6f3;
+  --chip-bg:#dcebe6; --chip-ink:#0d5a4e;
+  --copper:#a35a27; --soft:#e5eae5;
+  --warn-bg:#f4e8d8; --warn-ink:#7a4a14;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111814; --card:#19221d; --ink:#e7ece8; --muted:#93a29a; --line:#2a352e;
+    --pine:#2e6b57; --pine-ink:#eaf3ee;
+    --chip-bg:#15352e; --chip-ink:#7fd6c2;
+    --copper:#d9945c; --soft:#202b25;
+    --warn-bg:#3a2d18; --warn-ink:#e8c48d;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111814; --card:#19221d; --ink:#e7ece8; --muted:#93a29a; --line:#2a352e;
+  --pine:#2e6b57; --pine-ink:#eaf3ee;
+  --chip-bg:#15352e; --chip-ink:#7fd6c2;
+  --copper:#d9945c; --soft:#202b25;
+  --warn-bg:#3a2d18; --warn-ink:#e8c48d;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  padding-bottom:64px;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+header{padding:26px 0 6px}
+h1{font-family:Fraunces,Georgia,"Times New Roman",serif;font-weight:640;font-size:34px;line-height:1.05;margin:0}
+h1 em{font-style:italic;font-weight:500}
+.sub{color:var(--muted);margin:6px 0 0;font-size:13.5px}
+
+/* route strip */
+.route{margin:20px -16px 8px;padding:6px 16px 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.route::-webkit-scrollbar{display:none}
+.route-in{display:flex;gap:0;align-items:flex-start;min-width:max-content;position:relative}
+.stop{appearance:none;border:0;background:none;padding:0 14px 0 0;margin:0;cursor:pointer;text-align:left;color:var(--ink);position:relative}
+.stop .dotline{display:flex;align-items:center;height:18px}
+.stop .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--pine);background:var(--bg);flex:0 0 auto;transition:background .15s}
+.stop .rail{height:2px;background:var(--line);flex:1 1 auto;min-width:44px;margin-left:4px}
+.stop:last-child .rail{display:none}
+.stop .city{font-family:Fraunces,Georgia,serif;font-size:16.5px;font-weight:640;margin-top:5px;white-space:nowrap}
+.stop .when{font-size:11.5px;color:var(--muted);white-space:nowrap}
+.stop[aria-pressed="true"] .dot{background:var(--pine)}
+.stop[aria-pressed="true"] .city{color:var(--pine)}
+.stop:focus-visible{outline:2px solid var(--copper);outline-offset:3px;border-radius:6px}
+
+/* category buttons */
+.cats{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 18px}
+.cat{appearance:none;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);
+  border-radius:999px;padding:9px 15px;font-size:14px;font-weight:600;transition:background .12s,color .12s}
+.cat[aria-pressed="true"]{background:var(--pine);border-color:var(--pine);color:var(--pine-ink)}
+.cat:focus-visible{outline:2px solid var(--copper);outline-offset:2px}
+
+/* bed card */
+.bed{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:0 0 14px}
+.bed .top{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+.bed .prop{font-family:Fraunces,Georgia,serif;font-size:19px;font-weight:640}
+.bed .paid{font-size:12.5px;color:var(--chip-ink);background:var(--chip-bg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.bed .paid.warn{background:var(--warn-bg);color:var(--warn-ink)}
+.bed p{margin:6px 0 0;color:var(--muted);font-size:13.5px}
+.bed .legs{margin-top:10px;border-top:1px dashed var(--line);padding-top:9px;font-size:13px;color:var(--muted)}
+.bed .legs b{color:var(--ink);font-weight:600}
+
+/* list */
+.grouphead{font-size:12.5px;letter-spacing:.02em;color:var(--muted);margin:20px 2px 8px;font-weight:600}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 8px;
+  display:grid;grid-template-columns:1fr auto;gap:4px 12px}
+.item .name{font-weight:650;font-size:15px}
+.item .name .star{color:var(--copper);font-weight:400;margin-left:4px;cursor:default}
+.item .area{color:var(--copper);font-weight:600;font-size:12.5px;margin-left:6px}
+.item .note{grid-column:1 / -1;color:var(--muted);font-size:13.5px;margin-top:1px}
+.item .meta{grid-column:1;color:var(--muted);font-size:12.5px;margin-top:5px}
+.item .side{grid-column:2;grid-row:1 / span 1;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.chip{background:var(--chip-bg);color:var(--chip-ink);border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:650;white-space:nowrap}
+.mapbtn{grid-column:2;justify-self:end;align-self:end;
+  border:1px solid var(--line);background:none;color:var(--pine);border-radius:999px;
+  padding:5px 12px;font-size:12.5px;font-weight:650;text-decoration:none;margin-top:5px}
+.mapbtn:hover{background:var(--soft)}
+.mapbtn:focus-visible{outline:2px solid var(--copper);outline-offset:2px}
+.empty{color:var(--muted);padding:24px 4px;font-size:14px}
+
+/* footer */
+details.fixed{margin:28px 0 0;border-top:1px solid var(--line);padding-top:14px}
+details.fixed summary{cursor:pointer;font-weight:650;font-size:14px;color:var(--pine)}
+details.fixed .body{color:var(--muted);font-size:13.5px;margin-top:10px}
+details.fixed .body p{margin:0 0 8px}
+.hint{color:var(--muted);font-size:12px;margin:14px 0 0}
+@media (prefers-reduced-motion: no-preference){
+  .fadein{animation:fade .18s ease-out}
+  @keyframes fade{from{opacity:.4}to{opacity:1}}
+}
+@media (max-width:430px){
+  h1{font-size:29px}
+  .item{grid-template-columns:1fr auto}
+}
+
+/* ---------- site chrome ---------- */
+.topbar{position:sticky;top:0;z-index:40;background:color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:760px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
+.brand{font-family:Fraunces,Georgia,serif;font-weight:640;font-size:17px;color:var(--ink);text-decoration:none;margin-right:auto}
+.brand em{font-style:italic;color:var(--copper)}
+.topnav{display:flex;gap:4px}
+.topnav a{color:var(--muted);text-decoration:none;font-size:13px;padding:6px 10px;border-radius:999px}
+.topnav a:hover{background:var(--soft);color:var(--ink)}
+.hero{position:relative;overflow:hidden;background:var(--pine)}
+.hero img{display:block;width:100%;height:320px;object-fit:cover;filter:saturate(1.05)}
+.hero .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,16,.15) 0%,rgba(10,20,16,.68) 78%,rgba(10,20,16,.82) 100%)}
+.hero .hero-in{position:absolute;left:0;right:0;bottom:0}
+.hero .hero-wrap{max-width:760px;margin:0 auto;padding:0 16px 22px}
+.hero h1{color:#f4f8f5;font-size:40px;text-shadow:0 1px 12px rgba(0,0,0,.35)}
+.hero h1 em{color:#e9b98a}
+.hero .sub{color:#dbe6de;font-size:14px;max-width:560px}
+.hero .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.hero .hchip{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#f0f5f1;
+  font-size:12px;padding:4px 11px;border-radius:999px;backdrop-filter:blur(4px)}
+section.block{margin:30px 0 0;scroll-margin-top:64px}
+h2.sec{font-family:Fraunces,Georgia,serif;font-weight:640;font-size:24px;margin:0 0 4px}
+.sec-sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:0 0 12px}
+.flight{display:grid;grid-template-columns:auto 1fr;gap:12px 14px;align-items:start}
+.fbadge{background:var(--pine);color:var(--pine-ink);font-size:11px;letter-spacing:.08em;font-weight:700;
+  border-radius:8px;padding:5px 9px;text-transform:uppercase;margin-top:2px}
+.fdate{font-weight:600;font-size:14px}
+.legline{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:2px}
+.apt{font-family:Fraunces,Georgia,serif;font-size:23px;font-weight:640}
+.ftime{font-size:13px;color:var(--muted)}
+.farrow{color:var(--copper);font-size:18px}
+.fmeta{color:var(--muted);font-size:12.5px;margin-top:4px;line-height:1.55}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:13.5px;margin-top:6px}
+.kv b{color:var(--muted);font-weight:600;white-space:nowrap}
+.tickets{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;font-size:13px}
+.tickets div{display:flex;justify-content:space-between;gap:12px;padding:3px 0}
+.tickets span:last-child{color:var(--muted);font-variant-numeric:tabular-nums}
+.tot{border-top:1px solid var(--line);margin-top:8px;padding-top:9px;display:flex;justify-content:space-between;font-weight:700;font-size:14px}
+.callout{background:var(--warn-bg);color:var(--warn-ink);border-radius:12px;padding:11px 13px;font-size:13px;margin-top:12px;line-height:1.55}
+.check{list-style:none;margin:8px 0 0;padding:0;font-size:13.5px}
+.check li{padding:5px 0 5px 26px;position:relative;line-height:1.5}
+.check li::before{content:"";position:absolute;left:2px;top:9px;width:13px;height:13px;border-radius:4px;
+  border:2px solid var(--pine)}
+.check li::after{content:"";position:absolute;left:6px;top:11px;width:6px;height:4px;border-left:2px solid var(--pine);
+  border-bottom:2px solid var(--pine);transform:rotate(-45deg);opacity:.85}
+.carchips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.carchips span{background:var(--soft);color:var(--ink);font-size:12px;padding:4px 10px;border-radius:999px}
+.bedimg{width:calc(100% + 32px);margin:-16px -16px 12px;height:148px;object-fit:cover;border-radius:15px 15px 0 0;display:block}
+.imgfall{width:calc(100% + 32px);margin:-16px -16px 12px;height:96px;border-radius:15px 15px 0 0;
+  background:linear-gradient(120deg,var(--pine),#3e7d64 60%,var(--copper));display:flex;align-items:flex-end;padding:10px 14px;
+  color:#f2f7f3;font-family:Fraunces,Georgia,serif;font-size:19px;font-weight:640;box-sizing:border-box}
+.rate{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--copper);font-weight:600;
+  background:color-mix(in srgb, var(--copper) 12%, transparent);border-radius:999px;padding:2px 9px;margin-left:8px;vertical-align:2px;white-space:nowrap}
+.rate small{color:var(--muted);font-weight:500}
+.photocred{color:var(--muted);font-size:11px;text-align:center;margin:26px 0 0}
+@media (max-width:430px){
+  .hero img{height:250px}
+  .hero h1{font-size:31px}
+  .apt{font-size:19px}
+  .topnav a{padding:6px 7px;font-size:12px}
+}
+</style>
+</head>
+<body>
+<script>
+function imgStep(el){
+  var srcs=(el.dataset.srcs||"").split("|").filter(Boolean);
+  var i=parseInt(el.dataset.i||"0",10)+1;
+  if(i<srcs.length){el.dataset.i=i;el.src=srcs[i];}
+  else{
+    var d=document.createElement("div");
+    d.className=el.dataset.fallclass||"imgfall";
+    d.textContent=el.dataset.label||"";
+    el.replaceWith(d);
+  }
+}
+</script>
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="#top">Bosnia <em>2026</em></a>
+    <nav class="topnav">
+      <a href="#flights">Flights</a><a href="#car">Car</a><a href="#trip">The trip</a>
+    </nav>
+  </div>
+</div>
+
+<div class="hero" id="top">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Mostar%20Old%20Town%20Panorama%202007.jpg?width=1600"
+       data-srcs="https://commons.wikimedia.org/wiki/Special:FilePath/Mostar%20Old%20Town%20Panorama%202007.jpg?width=1600|https://commons.wikimedia.org/wiki/Special:FilePath/Sarajevo%20City%20Panorama.JPG?width=1600"
+       data-label="Bosnia 2026" alt="Stari Most and the old town of Mostar on the Neretva" onerror="imgStep(this)">
+  <div class="shade"></div>
+  <div class="hero-in"><div class="hero-wrap">
+    <h1>Bosnia <em>2026</em></h1>
+    <p class="sub">19 September to 4 October. Ahmad, Samir and Mirza. One car, seven bases, every mosque on the list.</p>
+    <div class="chips">
+      <span class="hchip">YYZ &rarr; Zagreb, 19 Sep</span>
+      <span class="hchip">3 travellers</span>
+      <span class="hchip">1,363 km between bases</span>
+      <span class="hchip">Home 4 Oct</span>
+    </div>
+  </div></div>
+</div>
+
+<div class="wrap">
+
+<section class="block" id="flights">
+  <h2 class="sec">Flights</h2>
+  <p class="sec-sub">Porter, operated by Air Transat on an Airbus A330. Airline confirmation <b>ZEUU2U</b>, CheapOair booking <b>95110612</b>. Nonstop both ways.</p>
+
+  <div class="panel">
+    <div class="flight">
+      <span class="fbadge">Out</span>
+      <div>
+        <div class="fdate">Saturday 19 September, flight PD 7212</div>
+        <div class="legline">
+          <span class="apt">YYZ</span><span class="ftime">9:10 PM</span>
+          <span class="farrow">&rarr;</span>
+          <span class="apt">ZAG</span><span class="ftime">11:55 AM, 20 Sep</span>
+        </div>
+        <div class="fmeta">Toronto Pearson to Zagreb Franjo Tudman. 8 h 45 m in the air. Basic Economy: one carry-on that fits under the seat in front of you, checked bags cost extra.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="flight">
+      <span class="fbadge">Home</span>
+      <div>
+        <div class="fdate">Sunday 4 October, flight PD 7213</div>
+        <div class="legline">
+          <span class="apt">ZAG</span><span class="ftime">1:50 PM</span>
+          <span class="farrow">&rarr;</span>
+          <span class="apt">YYZ</span><span class="ftime">5:20 PM same day</span>
+        </div>
+        <div class="fmeta">Zagreb to Toronto Pearson, 9 h 30 m. Car back at the airport by 11:00 AM leaves a comfortable margin for the counter and security.</div>
+      </div>
+    </div>
+    <div class="tickets">
+      <div><span>Ahmad Baig Mirza</span><span>e-ticket 4514828201034</span></div>
+      <div><span>Ahmad Samir Sakhi</span><span>e-ticket 4514828201035</span></div>
+      <div><span>Mirza Veletanlic</span><span>e-ticket 4514828201036</span></div>
+    </div>
+    <div class="callout">Tickets are non-refundable and non-changeable. Reconfirm the departure time with the airline about 72 hours out, and be at Pearson around 3 hours before the 9:10 PM departure. Passports must be valid 6 months past 4 October.</div>
+  </div>
+</section>
+
+<section class="block" id="car">
+  <h2 class="sec">Car rental</h2>
+  <p class="sec-sub">Enterprise, in the terminal at Zagreb Airport. Booking.com voucher <b>784225089</b>, Enterprise confirmation <b>2132882839COUNT</b>. Main driver: <b>Mirza Veletanlic</b>.</p>
+
+  <div class="panel">
+    <div class="flight">
+      <span class="fbadge">Pick up</span>
+      <div>
+        <div class="fdate">Sunday 20 September, 1:00 PM</div>
+        <div class="fmeta">Zagreb Airport Franjo Tudman, at the rental counter in the terminal. The flight lands 11:55 AM, so the window is fine, but be at the counter by 1:00 PM sharp: after the pickup time the car can be released. Running late, call Enterprise at +385 99 382 4785.</div>
+      </div>
+    </div>
+    <div class="flight" style="margin-top:12px">
+      <span class="fbadge">Drop off</span>
+      <div>
+        <div class="fdate">Sunday 4 October, 11:00 AM</div>
+        <div class="fmeta">Same counter, 14 days total. Refill the tank just before the airport: the fuel policy is like for like, and missing fuel is charged at the supplier's own price per litre.</div>
+      </div>
+    </div>
+    <div class="carchips">
+      <span>Intermediate SUV</span><span>Mazda CX-5 or similar</span><span>Automatic</span>
+      <span>5 seats</span><span>3 large bags</span><span>Unlimited km</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <b style="font-size:14px">At the counter, Mirza needs</b>
+    <ul class="check">
+      <li>The printed voucher or the eVoucher on the phone. Without it the desk can refuse the car or charge again.</li>
+      <li>A physical credit card in his own name, with the PIN, activated for international payments, and with room for the security deposit that gets blocked for the whole rental.</li>
+      <li>His physical driving licence, held at least 12 months. Digital licences are not accepted. Every extra driver shows theirs too.</li>
+      <li>Passports, plus the return flight ticket showing the 4 October departure.</li>
+      <li>A letter from the credit card company confirming rental cover, if you plan to rely on card insurance. See the coverage note below.</li>
+    </ul>
+    <div class="callout"><b>Coverage is not included.</b> This rate has no Collision Damage Waiver and no Theft Protection. Without proof of your own cover, in the form of a letter from the credit card company, the counter will insist you buy both on the spot. Decide before you fly, and get the letter in writing.</div>
+    <div class="callout"><b>Crossing into Bosnia.</b> The voucher does not spell out cross-border permission for Bosnia and Herzegovina. Confirm it at the counter and ask them to note it on the rental agreement, along with the green insurance card for the borders.</div>
+    <div class="kv" style="margin-top:12px">
+      <b>Enterprise desk</b><span>21 Ulica Rudolfa Fizira, Zagreb, +385 99 382 4785</span>
+      <b>Booking.com support</b><span>+1 403 698 8469</span>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="trip">
+<header>
+  <h2 class="sec">The trip, stop by stop</h2>
+  <p class="sec-sub">Pick where you are, pick what you feel like, and every option shows its drive from there, with its Google rating where the place has one.</p>
+</header>
+</section>
+
+<nav class="route" aria-label="Where are you">
+  <div class="route-in" id="route"></div>
+</nav>
+
+<div class="cats" id="cats" role="group" aria-label="What do you feel like"></div>
+
+<div id="bed"></div>
+<div id="list" aria-live="polite"></div>
+
+<details class="fixed">
+  <summary>Fixed points</summary>
+  <div class="body">
+    <p><b>Flights</b>: Porter PD 7212 / PD 7213 operated by Air Transat, confirmation ZEUU2U. Out 19 Sep 9:10 PM, land Zagreb 11:55 AM. Home 4 Oct 1:50 PM, land Toronto 5:20 PM.</p>
+    <p><b>Car</b>: Enterprise, Mazda CX-5 class, Zagreb Airport, 20 Sep 1:00 PM to 4 Oct 11:00 AM. Main driver Mirza, deposit blocked on his card, CDW and theft cover not included. Full details in the Car section above.</p>
+    <p><b>Total driving</b> between bases: 1,363 km moving time, excluding border waits. Day trips are extra.</p>
+  </div>
+</details>
+<p class="hint">Times without a wave are straight from your planner. A wave (&#8776;) means it was added up from your own leg times, so treat it as a rough figure. Star ratings and review counts are from Google, pulled September 2026; tap through for current reviews. Bosnia is halal by default. Ask in Neum and Croatia.</p>
+<p class="photocred">Photos: Wikimedia Commons</p>
+</div>
+
+<script>
+"use strict";
+const RATINGS = {"Kostelski Buk":[4.6,"5,270","ChIJw6eP1z9HYUcRVioM1g3Z-XQ"],"Restoran Mlin":[3.5,"1,545","ChIJA6xZdOo_YUcReJNiPIu6HNU"],"Bistro River Una":[4.3,"2,009","ChIJATNGyW1AYUcRXZkyTz_1yg8"],"Čardak na Uni":[4.3,"2,383","ChIJ3VGp-GxAYUcRceYbf7zKudg"],"Bella Italia":[4.5,"1,277","ChIJmYw0OUJAYUcRJ3JrK7eo_co"],"Restoran Makaba":[4.5,"1,908","ChIJk9eVBlglYUcR1gq3IKfSYok"],"Ćevabdžinica Hari":[4.7,"10,580","ChIJc5xJosT_XkcRLOVap4oM7Bs"],"Lutvina Kahva":[4.6,"1,790","ChIJw5cMocT_XkcR0O0gS2PEBAo"],"Stari Grad fortress":[4.7,"540","ChIJDUjh0gf_XkcRlgJmN6lBH8o"],"Sulejmanija, the Coloured Mosque":[4.9,"2,045","ChIJd7d4WcP_XkcRIF52WrgzRgM"],"Jajce waterfall":[4.7,"1,043","ChIJTzrTEDY1XkcR9JOqQzlRxG8"],"Pliva Lakes watermills":[4.8,"9,521","ChIJc616Ljc0XkcRPbpMqhz5ZSg"],"Štrbački Buk and Una National Park":[4.7,"7,826","ChIJfVj9a4AaYUcROJbvTxopdVI"],"Gazi Husrev-beg Mosque":[4.8,"5,121","ChIJ3Uam5cjIWEcRgsvnpvOBLtE"],"Tunnel of Hope":[4.6,"8,591","ChIJVYYAdfHJWEcRkWfIrYD3rM0"],"Trebević cable car":[4.6,"6,530","ChIJMYUGybnIWEcR643LiroTctQ"],"Yellow Fortress, Žuta Tabija":[4.6,"6,535","ChIJHfuUyLXIWEcRyNqzdTOEDOk"],"Ćevabdžinica Željo":[4.5,"12,471","ChIJ40sM9sjIWEcRokEsNbHgf7A"],"Petica Ferhatović":[4.6,"8,922","ChIJBTGHM8jIWEcRp6O-0sQxbL0"],"Ćevabdžinica Nune":[4.8,"5,668","ChIJOV81f8_IWEcRjxy2zgj2eHo"],"Buregdžinica Sač":[4.5,"6,577","ChIJd8JPScjIWEcR_Z9GoB-7kO0"],"Pekara Imaret":[4.4,"739","ChIJG45c3cjIWEcRNqKTeug2jPo"],"Avlija":[4.7,"1,794","ChIJHdP6q9bIWEcRsMjctBp9N2k"],"Nanina Kuhinja":[4.4,"2,225","ChIJLfEAWsjIWEcRcUZdb-acBQs"],"Inat Kuća":[4.5,"2,560","ChIJ2etCzLfIWEcRKz9X-bXrM-M"],"Kibe Mahala":[4.5,"2,648","ChIJswvPNM3IWEcRHHC16eRP1SI"],"Mala Kuhinja":[4.7,"787","ChIJ68Ss5M7IWEcRCWyz6r_QlQY"],"Dveri":[4.7,"2,995","ChIJQ8OFqsnIWEcRN2hZY0MagHg"],"Gönül Sofra":[4.9,"100","ChIJdUNnxdTJWEcRG-YinytnWY4"],"City View Sarajevo":[4.7,"490","ChIJRbJVfXLJWEcRssdHKXOAo-o"],"Habitus":[4.8,"672","ChIJtcOl4hPJWEcRmIJ8CtOwlfI"],"Casa El Gitano":[4.7,"973","ChIJ-YcRdRXJWEcREnBMGkhZIRw"],"ETA Burgers":[4.9,"353","ChIJkZ-0J4HJWEcRyQFOgUDaYAY"],"Šah Mat Burger":[4.5,"1,866","ChIJJ1opO8LJWEcR6joUBjkJHgQ"],"Terra":[4.4,"409","ChIJ-2Gy5xXJWEcRVCJ3Bz1_yNI"],"Nostra Cucina":[4.5,"2,004","ChIJ19PoWMXIWEcR4U-wICftHXA"],"Restoran Tavola":[4.6,"911","ChIJwWGCVMXIWEcRCt68KMH2U7o"],"Gastro Pub Vučko":[4.6,"2,917","ChIJT0YCmtrIWEcRV3ViYwq53A0"],"Pivnica HS":[4.4,"3,878","ChIJoRx_GbjIWEcRuWWbkpTc75s"],"Restoran Toplik":[4.6,"3,411","ChIJWeL4cTrIWEcRIY8heHRV4rw"],"Marshall's Gelato":[4.6,"1,187","ChIJUzbaj23JWEcRvN1HMKdUOFk"],"Baklava Dućan":[4.7,"619","ChIJlSyF-8jIWEcRp7SCX1vFRH8"],"Fistikzade":[4,"950","ChIJuWtVGO_JWEcRGmAIunxb5CA"],"Slastičarna Egipat":[4.3,"637","ChIJV7dkzcjIWEcRIEtTVw473uA"],"FUKA Specialty Coffee":[4.2,"806","ChIJ5fgRIGjJWEcR8ncQFZoXTmk"],"Kawa":[4.7,"904","ChIJD9V7zdfJWEcRbU7tGvmycsA"],"Backyard Coffee":[4.4,"946","ChIJZz6-YQDJWEcRqS8w0aP8SsY"],"Restoran Kovačević":[4.4,"8,452","ChIJ9QsmNhhfX0cR5P_kr872kCE"],"Restaurant Šadrvan":[4.5,"5,530","ChIJOzek3gZDSxMRjPrL6uFKavA"],"Hindin Han":[4.5,"3,069","ChIJgdB0KAdDSxMRrfHMeFOJ6Ug"],"Urban Taste of Orient":[4.5,"3,360","ChIJnbQvWQZDSxMRBBvjNOo6ueo"],"Bijeli Bar":[3.7,"141","ChIJ4WQx4fBDSxMR8BQJG9JHmd8"],"Caffe bar Nide Veze":[4.4,"2,837","ChIJFwvx26lDSxMRtbGUSavZ4bE"],"CityBar Caffe":[4.7,"285","ChIJIyXaPbGjSxMRubOpGvAj6k8"],"Stari Most":[4.8,"60,943","ChIJYbL_wgZDSxMRxMQvCjsSbhw"],"Stari Most and Kujundžiluk":[4.8,"60,943","ChIJYbL_wgZDSxMRxMQvCjsSbhw"],"Blagaj Tekija":[4.7,"13,389","ChIJ8brH2aBnSxMRHDRwPUBMi00"],"Kravice Waterfall":[4.5,"32,717","ChIJgdGqEb0NSxMRlehFIA6JvfY"],"Burj Khalifa Shisha & Coffee Bar":[4.6,"407","ChIJG4muDRJ5ZkcRegPe7AWmVn8"],"Burj Khalifa, Kriznega 92":[4.6,"407","ChIJG4muDRJ5ZkcRegPe7AWmVn8"],"New Aroma Shisha & Caffe Bar":[4.2,"273","ChIJoSO12GtAYUcRyE8QcsDEQK4"],"Pasha Caffe":[3.9,"327","ChIJfaPWaGlAYUcRjf9gtNTfFFE"],"Dibek":[4.8,"1,244","ChIJ-yBXscnIWEcR05dyCkVRhwA"],"Hookah bar Istanbul":[4.9,"355","ChIJv1S0swHJWEcRj-G_YE7bQr4"],"Hookah Lounge Babos":[4.6,"464","ChIJlVUvaovJWEcRUA6HWbAhMDQ"],"Secret Hookah Lounge":[4.9,"509","ChIJ3TEmGFjJWEcR28yPalHtRcQ"],"Hookah Lounge Factory":[4.6,"40","ChIJYd-YrWvJWEcRGgcRyjr_htY"],"Caffe bar Retro Baščaršija":[5,"44","ChIJiSOvWiTJWEcRmhlvrywXZpM"],"Nargila Caffe Bar Libris":[4.7,"497","ChIJ4Ub52cjIWEcRRFsnzuOeyQs"],"Shisha-Hookah Bar Džentlmen":[4.2,"12","ChIJrbMW2trIWEcReO_ks2LTRiY"],"Kairo Hookah Lounge":[5,"26","ChIJa6i6GQBDSxMRM5q3HwYg0Lk"],"MerAmi Caffe Lounge":[4.7,"277","ChIJMe73LfBDSxMRT6O-965HqcM"],"Ljetna Bašta Oskar":[4.6,"613","ChIJD_4dNwdDSxMR_GqzabXw6-U"],"Nargila bar Nil":[4.3,"36","ChIJg56lpyhDSxMRqsPZx-XDW48"],"Konzulat Hookah Lounge":[4.4,"68","ChIJYdulr11DSxMR1O2CNJvBW0o"],"Malibu Nargila Bar":[5,"3","ChIJI6n1CwCjSxMR6KobFMjamjk"],"Cocktail bar Lungo Mare":[4.2,"57","ChIJ1ZF6qwyjSxMRWRcFzk4gYz4"],"Vrelo Bosne":[4.7,"17,884","ChIJqZMexIHKWEcRAxLdbOZV2pA"]};
+const HERO = {
+ zagreb:["Zagreb panorama 20100507 1262P.jpg"],
+ bihac:["Bihać – Inner City.jpg","Una River Valley 1.jpg"],
+ travnik:["Travnik Panorama 1.JPG","Travnik Festung 1.JPG"],
+ sarajevo:["Sarajevo City Panorama.JPG"],
+ mostar:["Mostar Old Town Panorama 2007.jpg"],
+ neum:["Neum (BiH) - general view.jpg","Neum.JPG"],
+ krupa:["Bos.krupa.jpg","Bosanska Krupa (3) (cropped).jpg"]
+};
+function commons(f){return "https://commons.wikimedia.org/wiki/Special:FilePath/"+encodeURIComponent(f)+"?width=1200";}
+
+
+/* ---------- places you sleep, in trip order ---------- */
+const LOCS = [
+ {k:"zagreb", city:"Zagreb", when:"20 Sep + 3 Oct",
+  bed:{prop:"Hotel Cool Zagreb Airport", paid:"3 to 4 Oct, booked",
+  note:"Pleska ul. 105, 10410 Velika Gorica, Croatia. About 2.5 km from the terminal, free parking, PapaMo restaurant on site."}},
+ {k:"bihac", city:"Biha\u0107", when:"20 to 22 Sep",
+  bed:{prop:"Holiday Home Ra\u010di\u0107", paid:"2 nights, booked",
+  note:"Ra\u010di\u0107 / Ra\u010di\u0107ki put, 77000 Biha\u0107. A riverside hamlet about 12 km upstream of Biha\u0107 town, beside the Una Aqua rafting base, 15 to 20 min from the old town."}},
+ {k:"travnik", city:"Travnik", when:"22 to 23 Sep",
+  bed:{prop:"Apartment Adi", paid:"1 night, booked",
+  note:"Central Travnik, one minute from the Ivo Andri\u0107 birth house, about 700 m from the Stari Grad fortress. Free private parking."}},
+ {k:"sarajevo", city:"Sarajevo", when:"23 to 28 Sep",
+  bed:{prop:"Apartments Elfie", paid:"5 nights, booked",
+  note:"Gajev trg 1, 71000 Sarajevo, by the National Theatre. About 7 min on foot to the Latin Bridge, 10 to the Sebilj."}},
+ {k:"mostar", city:"Mostar", when:"28 Sep to 1 Oct",
+  bed:{prop:"Hidden Gem", paid:"3 nights, booked",
+  note:"One\u0161\u0107ukova 49, 88000 Mostar, old town, parking on the property. There is a second listing called Hidden Gem of Old Town at Rade Bitange 12, so match the host name on your confirmation."}},
+ {k:"neum", city:"Neum", when:"1 to 2 Oct",
+  bed:{prop:"Grand Hotel Neum Wellness & Spa", paid:"1 night, booked",
+  note:"Zagreba\u010dka 2, 88390 Neum. +387 36 880 222. Rooftop infinity pool, spa, lift and tunnel down to the hotel beach."}},
+ {k:"krupa", city:"Bosanska Krupa", when:"2 to 3 Oct",
+  bed:{prop:"Still to book", paid:"Not booked", warn:true,
+  note:"The only open bed on the trip. Planner verdict: Bosanska Krupa, or Biha\u0107 itself at about 25 extra minutes on the Saturday. Friday is long, about 500 km, but nearly all Croatian motorway. Livno only if someone specifically wants the wild horses."}}
+];
+
+/* ---------- driving legs from the planner ---------- */
+const LEGS = [
+ {d:"Sun 20 Sep", t:"Zagreb Airport to Biha\u0107 (Ra\u010di\u0107)", km:145, time:"2h15", n:"A1 to Karlovac, D1 through Slunj, Iza\u010di\u0107 border.", at:["zagreb","bihac"]},
+ {d:"Tue 22 Sep", t:"Biha\u0107 to Jajce", km:175, time:"3h00", n:"Mountain road via Klju\u010d and Mrkonji\u0107 Grad. The hardest driving of the trip, daylight only.", at:["bihac","travnik"]},
+ {d:"Tue 22 Sep", t:"Jajce to Travnik", km:70, time:"1h15", n:"Via Donji Vakuf. The Prusac detour adds about 45 min.", at:["bihac","travnik"]},
+ {d:"Wed 23 Sep", t:"Travnik to Sarajevo", km:90, time:"1h30", n:"Direct via Vitez and Kiseljak. Via Zenica and Vranduk it is about 130 km and 2h30.", at:["travnik","sarajevo"]},
+ {d:"Mon 28 Sep", t:"Sarajevo to Mostar", km:165, time:"3h00", n:"Moving time down the Neretva. A full day once you stop.", at:["sarajevo","mostar"]},
+ {d:"Thu 1 Oct", t:"Mostar to Neum", km:70, time:"1h20", n:"Entirely inside Bosnia.", at:["mostar","neum"]},
+ {d:"Fri 2 Oct", t:"Neum to Bosanska Krupa", km:500, time:"5h15", n:"Out at Klek, Croatian A1 north, back in near Li\u010dko Petrovo Selo. Longest drive of the trip.", at:["neum","krupa"]},
+ {d:"Sat 3 Oct", t:"Bosanska Krupa to Velika Gorica", km:145, time:"2h15", n:"Via Velika Kladu\u0161a and Maljevac, or back through Biha\u0107 and Iza\u010di\u0107.", at:["krupa","zagreb"]},
+ {d:"Sun 4 Oct", t:"Hotel to Zagreb Airport", km:3, time:"0h10", n:"Car back by 11:00, terminal by 10:45.", at:["zagreb"]}
+];
+
+/* ---------- graph of your own leg times, minutes ---------- */
+const EDGES = [
+ ["zagreb","bihac",135],["bihac","krupa",30],["krupa","zagreb",135],
+ ["bihac","jajce",180],["jajce","travnik",75],
+ ["travnik","visoko",60],["visoko","sarajevo",30],["travnik","sarajevo",90],
+ ["travnik","vranduk",45],["vranduk","sarajevo",55],
+ ["sarajevo","konjic",50],["konjic","jablanica",25],["sarajevo","jablanica",75],
+ ["jablanica","mostar",105],["sarajevo","mostar",180],
+ ["mostar","pocitelj",30],["pocitelj","neum",45],["mostar","neum",80],
+ ["mostar","capljina",35],["neum","capljina",45],
+ ["mostar","stolac",50],["neum","stolac",50],
+ ["neum","krupa",315]
+];
+const AREA = {zagreb:"Zagreb", bihac:"Biha\u0107", travnik:"Travnik", sarajevo:"Sarajevo",
+ mostar:"Mostar", neum:"Neum", krupa:"Bosanska Krupa", jajce:"Jajce", visoko:"Visoko",
+ konjic:"Konjic", jablanica:"Jablanica", pocitelj:"Po\u010ditelj", stolac:"Stolac",
+ capljina:"\u010capljina", vranduk:"Vranduk"};
+
+/* ---------- categories ---------- */
+const CATS = [
+ {k:"eat", label:"Eat"},
+ {k:"do", label:"Do & see"},
+ {k:"islam", label:"Islam & Ottoman"},
+ {k:"nature", label:"Nature & views"},
+ {k:"relax", label:"Relax"},
+ {k:"shisha", label:"Shisha"}
+];
+
+/* ---------- every option in the workbook ----------
+ c category, b home base, n name, t time wording from the planner (shown when you are at that base),
+ m minutes used for cross-base sums (0 = in town, null = no figure, label always shown),
+ note, meta (address, phone, closed days), star = rank on the most-popular list, q = maps query */
+const D = [
+
+/* ============ ZAGREB & VELIKA GORICA ============ */
+{c:"eat",b:"zagreb",n:"PapaMo",t:"in the hotel",m:0,note:"Well reviewed, pizza and grills, and nobody has to drive.",meta:"Hotel Cool Zagreb Airport, Pleska ul. 105, Velika Gorica"},
+{c:"eat",b:"zagreb",n:"Burj Khalifa, Kriznega 92",t:"Zagreb city",m:null,note:"The second branch does Middle Eastern food as well as shisha, which solves dinner and the last shisha in one stop.",meta:"Kriznega 92, Zagreb"},
+{c:"eat",b:"zagreb",n:"Islamic Centre halal food",t:"15 min from the hotel",m:15,note:"The safest bet for halal food in the city. Ask at the centre.",meta:"Gavellina 40, Zagreb"},
+{c:"eat",b:"zagreb",n:"Restaurants at Rastoke",t:"45 min, on the Biha\u0107 route",m:45,note:"Several beside the mills. Trout is the thing. Croatian prices, so this is the expensive meal of the day.",meta:"Rastoke, Slunj, Croatia"},
+{c:"do",b:"zagreb",n:"Upper Town, Ban Jela\u010di\u0107 Square and Dolac market",t:"20 min from the hotel",m:20,note:"The compact old centre. Dolac packs up by early afternoon.",meta:"Zagreb"},
+{c:"do",b:"zagreb",n:"Museum of Broken Relationships",t:"Upper Town, 20 min",m:20,note:"Small, odd and genuinely good.",meta:"\u0106irilometodska 2, Zagreb"},
+{c:"do",b:"zagreb",n:"Bara\u0107 Caves, Rakovica",t:"1h15, 5 min off the Biha\u0107 route",m:75,note:"A short guided cave tour if you want a break that is not a coffee.",meta:"Nova Kr\u0161lja, Rakovica, Croatia"},
+{c:"islam",b:"zagreb",n:"Zagreb Mosque and Islamic Centre",t:"15 min from the hotel",m:15,note:"Opened in 1987, among the largest Islamic centres in Europe, and a striking piece of late modernist architecture. The one thing to do at the Zagreb end.",meta:"Gavellina 40, Zagreb"},
+{c:"nature",b:"zagreb",n:"Rastoke, Slunj",t:"45 min, on the Biha\u0107 route",m:45,note:"A village of watermills built on top of the waterfalls where the Slunj\u010dica meets the Korana. Thirty minutes and a coffee, or an hour if you walk it.",meta:"Rastoke, Slunj, Croatia"},
+{c:"relax",b:"zagreb",n:"Infrared sauna and hot tub at the hotel",t:"in the hotel",m:0,note:"After 1,700 km of driving, not the worst idea.",meta:"Hotel Cool Zagreb Airport, Velika Gorica"},
+{c:"relax",b:"zagreb",n:"Nothing",t:"the hotel",m:0,note:"A defensible choice the night before a transatlantic flight.",meta:"Velika Gorica"},
+{c:"shisha",b:"zagreb",n:"Burj Khalifa Shisha & Coffee Bar",t:"Zagreb city",m:null,note:"The known quantity in Zagreb.",meta:"Maksimirska cesta 98, Zagreb"},
+{c:"shisha",b:"zagreb",n:"Burj Khalifa, Kriznega 92",t:"Zagreb city",m:null,note:"Second branch, food as well as shisha. Better for a last night.",meta:"Kriznega 92, Zagreb"},
+
+/* ============ BIHA\u0106 & THE UNA VALLEY ============ */
+{c:"eat",b:"bihac",n:"Kostelski Buk",t:"about 15 min, toward Bosanska Krupa",m:15,note:"The best known restaurant in the region. River fish, lamb, traditional stews, terrace over the emerald water. Ask for a terrace table.",meta:"Kostela, on the Una"},
+{c:"eat",b:"bihac",n:"Restoran Mlin",t:"on the Una, in Biha\u0107",m:15,note:"Long-standing local favourite. Grill, lamb, river fish.",meta:"Biha\u0107"},
+{c:"eat",b:"bihac",n:"Bistro River Una",t:"riverside in town",m:15,note:"Wide menu, riverside terrace, city view, moderate prices. The easy default.",meta:"Biha\u0107"},
+{c:"eat",b:"bihac",n:"\u010cardak na Uni",t:"just outside the centre",m:15,note:"Traditional Bosnian, right on the water.",meta:"Biha\u0107"},
+{c:"eat",b:"bihac",n:"Bella Italia",t:"Biha\u0107 centre",m:15,note:"Pizza and Italian, for the night nobody wants another grill.",meta:"Biha\u0107 centre"},
+{c:"eat",b:"bihac",n:"\u0106evabd\u017einice in the centre",t:"Biha\u0107 old town",m:15,note:"Several, all cheap and all fine. Krajina \u0107evapi sit closer to the Travnik style than the Sarajevo one.",meta:"Biha\u0107 old town",q:"cevabdzinica Bihac"},
+{c:"do",b:"bihac",n:"Rafting or kayaking the Una",t:"on the doorstep at Ra\u010di\u0107",m:0,note:"Una Aqua and several operators run the stretch down from \u0160trba\u010dki Buk. Half day, book the day before.",meta:"Una Aqua, Ra\u010di\u0107"},
+{c:"do",b:"bihac",n:"Biha\u0107 old town walk",t:"15 to 20 min",m:15,note:"Fethija, the Turbe, the Captain's Tower, the clock tower and the promenade, all within a few hundred metres.",meta:"Biha\u0107 old town"},
+{c:"do",b:"bihac",n:"Ostro\u017eac Castle",t:"35 min north toward Cazin",m:35,note:"Medieval Ottoman fortress with an Austro-Hungarian mansion grafted on. Free to wander, almost nobody there.",meta:"Ostro\u017eac, Cazin"},
+{c:"do",b:"bihac",n:"Kulen Vakuf and Ostrovica fortress",t:"40 min upstream",m:40,note:"A small Ottoman town under a cliff fortress, at the quiet end of the national park.",meta:"Kulen Vakuf"},
+{c:"do",b:"bihac",n:"Klju\u010d fortress",t:"1h30, on the Jajce road",m:90,note:"Halfway coffee stop. The ruined fortress above the town is where the last Bosnian king was captured in 1463.",meta:"Klju\u010d"},
+{c:"do",b:"bihac",n:"Bazeni Olimpija, Sanski Most",t:"Sanski Most, toward Jajce",m:null,note:"Pools with slides and diving boards.",meta:"Husimovci 79260, +387 62 874 735"},
+{c:"do",b:"bihac",n:"Bazeni Sanski Most",t:"Sanski Most, toward Jajce",m:null,note:"The alternative pool, on the M15 road.",meta:"M15, Sanski Most"},
+{c:"islam",b:"bihac",n:"Fethija Mosque",t:"Biha\u0107 old town, 15 to 20 min",m:15,note:"A 13th or 14th century Dominican Gothic church converted to a mosque in 1592, with medieval ste\u0107ak tombstones set into the walls. One of very few Gothic-form mosques in Europe. Also the closing Jummah option on 2 Oct if you leave Neum about 06:30.",meta:"Biha\u0107 old town"},
+{c:"islam",b:"bihac",n:"Kameno Turbe",t:"beside the mosque",m:15,note:"The stone Ottoman tomb in the old core.",meta:"Biha\u0107 old town"},
+{c:"islam",b:"bihac",n:"Kapetanova Kula",t:"Biha\u0107 old town",m:15,note:"The Captain's Tower, seat of the hereditary frontier commander the Ottomans relied on to hold this border. Now a museum.",meta:"Biha\u0107 old town"},
+{c:"islam",b:"bihac",n:"Sahat Kula, Biha\u0107",t:"a few steps away",m:15,note:"The Ottoman clock tower in the old core.",meta:"Biha\u0107 old town"},
+{c:"islam",b:"bihac",n:"Ostro\u017eac and Ostrovica fortresses",t:"35 to 40 min",m:35,note:"Two links in the chain of Krajina forts that faced the Habsburgs for three centuries.",meta:"Ostro\u017eac, Cazin"},
+{c:"nature",b:"bihac",n:"\u0160trba\u010dki Buk and Una National Park",t:"35 to 40 min from Ra\u010di\u0107",m:38,star:5,note:"The terraced 24 m fall on the Una against the Croatian border. Park entry fee, rough gravel on the last stretch, go before 10.",meta:"Una National Park"},
+{c:"nature",b:"bihac",n:"Japodski Otoci",t:"10 to 15 min",m:12,note:"River islands with pools, walkways and a swimming area.",meta:"Ra\u010di\u0107, Biha\u0107"},
+{c:"nature",b:"bihac",n:"Ripa\u010dki Slap and Kostelski Buk falls",t:"10 to 15 min",m:12,note:"Two smaller falls with restaurants attached, for when you do not want a whole park day.",meta:"Ripa\u010d, Biha\u0107"},
+{c:"nature",b:"bihac",n:"Plitvice Lakes, Croatia",t:"1h from Biha\u0107 plus the border",m:60,ov:{zagreb:70,krupa:45},note:"Genuinely close if anyone wants it. Three to four hours inside the park, tickets online. Also sits on the drive out on 3 Oct.",meta:"Plitvice Lakes National Park, Croatia"},
+{c:"relax",b:"bihac",n:"The Una outside the house",t:"at Ra\u010di\u0107",m:0,note:"Ra\u010di\u0107 is on the river, which is the whole point of it.",meta:"Ra\u010di\u0107, Biha\u0107"},
+{c:"relax",b:"bihac",n:"Japodski Otoci for a swim",t:"10 to 15 min",m:12,note:"Pools and walkways on the river islands.",meta:"Ra\u010di\u0107, Biha\u0107"},
+{c:"relax",b:"bihac",n:"Kostelski Buk terrace",t:"about 15 min",m:15,note:"Over the water, with nothing planned after it.",meta:"Kostela, Biha\u0107"},
+{c:"relax",b:"bihac",n:"Riverside promenade in the evening",t:"Biha\u0107 town",m:15,note:"The easy end to a day.",meta:"Bosanska, Biha\u0107"},
+{c:"shisha",b:"bihac",n:"New Aroma Shisha & Caffe Bar",t:"on the main promenade",m:15,note:"The biggest terrace and the busiest of them. Start here.",meta:"Bosanska 17, Biha\u0107"},
+{c:"shisha",b:"bihac",n:"Pasha Caffe",t:"Bosanska",m:15,note:"Two floors, the upstairs is the cosy one. Cash only.",meta:"Bosanska, Biha\u0107"},
+{c:"shisha",b:"bihac",n:"The Bosanska promenade generally",t:"town centre",m:15,note:"The scene is small and it turns over. Walk the promenade and pick whichever has a crowd outside. Weakest shisha on the route, and Sarajevo is four days away.",meta:"Bosanska, Biha\u0107"},
+
+/* ============ BOSANSKA KRUPA ============ */
+{c:"eat",b:"krupa",n:"Restoran Makaba",t:"on the river in town",m:0,note:"On the Una at the end of the Friday drive. Worth arriving hungry for.",meta:"Unska 15, Bosanska Krupa, +387 37 489-819"},
+{c:"do",b:"krupa",n:"Bosanska Krupa old town",t:"in town",m:0,note:"Fortress above the Una, an island in the middle of the river, and falls in the middle of town.",meta:"Bosanska Krupa"},
+{c:"islam",b:"krupa",n:"Bosanska Krupa fortress",t:"above the river",m:0,note:"Part of the same chain of Krajina forts as Ostro\u017eac and Ostrovica.",meta:"Bosanska Krupa"},
+
+/* ============ TRAVNIK ============ */
+{c:"eat",b:"travnik",n:"\u0106evabd\u017einica Hari",t:"in town",m:0,note:"Travnik \u0107evapi at the source. Their own style, smaller and served differently from Sarajevo's. Worth doing even if you are not hungry.",meta:"Donja \u010dar\u0161ija bb, +387 30 511-727"},
+{c:"eat",b:"travnik",n:"Lutvina Kahva",t:"Plava Voda",m:0,note:"Coffee on the same spot since Ottoman times, and the setting of Ivo Andri\u0107's Bosnian Chronicle. Coffee and baklava rather than a meal.",meta:"Plava Voda, Travnik"},
+{c:"eat",b:"travnik",n:"The Plava Voda terraces",t:"top of the old town",m:0,note:"Several restaurants side by side over the water, where the spring runs between the tables. Trout and grills. The obvious evening.",meta:"Plava Voda, Travnik"},
+{c:"eat",b:"travnik",n:"Hotel Vezir Palace restaurant",t:"central",m:0,note:"The reliable sit-down option if Plava Voda is full.",meta:"Hotel Vezir Palace, Travnik"},
+{c:"eat",b:"travnik",n:"Bakeries on the main street",t:"central",m:0,note:"Travnik is good bakery country. Breakfast solved.",meta:"Bosanska, Travnik",q:"pekara Travnik"},
+{c:"do",b:"travnik",n:"Stari Grad fortress",t:"10 min walk uphill",m:0,star:11,note:"The 15th century fortress above the town, with the valley view. Ottoman capital of Bosnia for 150 years, and almost nobody stops.",meta:"Travnik"},
+{c:"do",b:"travnik",n:"Ivo Andri\u0107 birth house",t:"one minute from the apartment",m:0,note:"Small museum in the house the Nobel laureate was born in.",meta:"Travnik"},
+{c:"do",b:"travnik",n:"Jajce old town, fortress and catacombs",t:"1h10 northwest",m:70,note:"The walls, the view, and the 14th century underground burial chamber cut for the Hrvatini\u0107 dukes. Easy half day if you did not stop on the drive in.",meta:"Jajce"},
+{c:"do",b:"travnik",n:"AVNOJ Museum, Jajce",t:"1h10, in Jajce",m:70,note:"Where Yugoslavia was formally founded in 1943. Fifteen minutes.",meta:"AVNOJ Museum, Jajce"},
+{c:"islam",b:"travnik",n:"Sulejmanija, the Coloured Mosque",t:"in town",m:0,star:11,note:"Built 1757, rebuilt 1815. Unusual for sitting on top of a covered bazaar, with painted panels of Mecca, Medina and Istanbul across the facade.",meta:"\u0160arena d\u017eamija, Travnik"},
+{c:"islam",b:"travnik",n:"El\u010di Ibrahim-pa\u0161a Madrasa",t:"in town",m:0,note:"Teaching more or less continuously since 1706, one of the oldest in the country.",meta:"Travnik"},
+{c:"islam",b:"travnik",n:"The vizier turbes",t:"in town",m:0,note:"The burial places of Ottoman governors from the 150 years when Travnik, not Sarajevo, was the capital.",meta:"Vezirski turbeti, Travnik"},
+{c:"islam",b:"travnik",n:"Had\u017ei Ali-bey Mosque",t:"lower town",m:0,note:"16th century, in the lower town.",meta:"Travnik"},
+{c:"islam",b:"travnik",n:"Stari Grad",t:"10 min walk uphill",m:0,note:"Medieval Bosnian fortress that the Ottomans took over and kept in use.",meta:"Stari Grad, Travnik"},
+{c:"islam",b:"travnik",n:"Prusac and Ajvatovica",t:"40 min west",m:40,note:"The split rock of Ajvaz-dedo and the tomb of Hasan Kafi Prusak. Two hours all in. Also reachable as a 45 min round detour off the Donji Vakuf road.",meta:"Prusac, Donji Vakuf"},
+{c:"islam",b:"vranduk",n:"Vranduk fortress and Sultan Mehmed Fatih Mosque",t:"in Vranduk",m:0,note:"Medieval royal fortress on a bend of the Bosna, with the small mosque of 1463 inside the walls. Forty minutes, few visitors, 10 min off the M17.",meta:"Vranduk, Zenica"},
+{c:"nature",b:"travnik",n:"Plava Voda",t:"in town",m:0,note:"The spring at the top of the old town. More a place than an activity.",meta:"Plava Voda, Travnik"},
+{c:"nature",b:"travnik",n:"Vla\u0161i\u0107 plateau",t:"30 min up",m:30,note:"Mountain, cheese and long views. Half a day if the weather is good.",meta:"Vla\u0161i\u0107"},
+{c:"nature",b:"jajce",n:"Jajce waterfall",t:"middle of the town",m:0,star:7,note:"The Pliva drops 20 m into the Vrbas in the middle of the town. Small entry fee, boardwalks to the base.",meta:"Pliva Waterfall, Jajce, +387 30 659-888"},
+{c:"nature",b:"jajce",n:"Pliva Lakes watermills",t:"15 min west of Jajce",m:15,star:7,note:"Twenty small wooden mills over the water. Best in late afternoon light, and swimmable in warm weather.",meta:"Mlin\u010di\u0107i, Pliva Lakes, Jajce"},
+{c:"eat",b:"jajce",n:"Lunch in Jajce old town",t:"by the falls",m:0,note:"Nothing famous, but the setting does the work. Plan to eat here rather than pushing on hungry.",meta:"Jajce old town",q:"restoran Jajce"},
+{c:"eat",b:"jajce",n:"Pliva Lakes restaurants",t:"15 min west",m:15,note:"Trout by the water, if you go out to the mills.",meta:"Pliva Lakes, Jajce",q:"restoran Plivsko jezero"},
+{c:"relax",b:"travnik",n:"Plava Voda in the evening",t:"in town",m:0,note:"The water running under the terraces. The single best hour in Travnik.",meta:"Plava Voda, Travnik"},
+{c:"relax",b:"travnik",n:"Vla\u0161i\u0107",t:"30 min up",m:30,note:"For a long view and cold air.",meta:"Vla\u0161i\u0107"},
+{c:"shisha",b:"travnik",n:"Plava Voda terraces",t:"old town",m:0,note:"No dedicated lounge worth a trip. Several cafes here will bring a nargila if you ask.",meta:"Plava Voda, Travnik"},
+{c:"shisha",b:"travnik",n:"The main street cafes",t:"central",m:0,note:"Ask at the apartment which place is doing shisha that month, it changes. Otherwise treat it as a coffee and baklava night and save it for Sarajevo.",meta:"Bosanska, Travnik",q:"caffe bar Travnik"},
+
+/* ============ SARAJEVO ============ */
+{c:"eat",b:"sarajevo",n:"\u0106evabd\u017einica \u017deljo",t:"in the bazaar",m:0,note:"The benchmark \u0107evapi. Expect a queue.",meta:"Kundurd\u017eiluk 19, +387 33 441-200"},
+{c:"eat",b:"sarajevo",n:"Petica Ferhatovi\u0107",t:"in the bazaar",m:0,note:"Everyone's favourite \u0107evapi. Honestly it was OK. Also a wait.",meta:"Bravad\u017eiluk 21, +387 33 537-555"},
+{c:"eat",b:"sarajevo",n:"\u0106evabd\u017einica Nune",t:"Ferhadija",m:0,note:"The third contender, usually quieter.",meta:"Ferhadija 12, closed Sun, +387 33 876-402"},
+{c:"eat",b:"sarajevo",n:"Buregd\u017einica Sa\u010d",t:"in the bazaar",m:0,note:"Burek baked under the iron sa\u010d lid. Cash only, go early, it sells out.",meta:"Bravad\u017eiluk mali 2, +387 33 239-748"},
+{c:"eat",b:"sarajevo",n:"Pekara Imaret",t:"in the bazaar",m:0,note:"Best kifle in the city, tucked in a courtyard. Cash only.",meta:"Mud\u017eeliti veliki 21"},
+{c:"eat",b:"sarajevo",n:"Avlija",t:"short walk out",m:0,note:"Klepe and begova \u010dorba in a covered courtyard.",meta:"Avde Sumbula 2, closed Sun, +387 62 699 409"},
+{c:"eat",b:"sarajevo",n:"Nanina Kuhinja",t:"in the bazaar",m:0,note:"Traditional Bosnian, open when others are not.",meta:"Kundurd\u017eiluk 35, +387 33 533-333"},
+{c:"eat",b:"sarajevo",n:"Inat Ku\u0107a",t:"by the river",m:0,note:"The House of Spite. Traditional, opposite the City Hall.",meta:"Veliki Alifakovac 1, closed Mon, +387 33 489-767"},
+{c:"eat",b:"sarajevo",n:"Kibe Mahala",t:"hillside",m:0,note:"Klepe are so good. Fancier, dress code, reserve ahead. Hillside view.",meta:"Vrbanju\u0161a 106, closed Sun, +387 61 040 000"},
+{c:"eat",b:"sarajevo",n:"Mala Kuhinja",t:"centre",m:0,note:"Chef's choice menu, no printed list. Reserve.",meta:"Tina Ujevi\u0107a 13, closed Sun, +387 33 841-076"},
+{c:"eat",b:"sarajevo",n:"Dveri",t:"old town",m:0,note:"Steakhouse, small, books out days ahead.",meta:"Prote Bakovi\u0107a 12, +387 33 537-020"},
+{c:"eat",b:"sarajevo",n:"G\u00f6n\u00fcl Sofra",t:"in the bazaar",m:0,note:"Traditional Bosnian, in the thick of it.",meta:"\u010cizmed\u017eiluk 16"},
+{c:"eat",b:"sarajevo",n:"City View Sarajevo",t:"above the bazaar",m:0,note:"Breakfast over the city. Small, reserve.",meta:"Podcarina 1, closed Mon, +387 61 161 310"},
+{c:"eat",b:"sarajevo",n:"Habitus",t:"centre",m:0,note:"Breakfast, and the place to sit for two hours if anyone needs to work.",meta:"Pru\u0161\u010dakova 8, +387 60 35 37 085"},
+{c:"eat",b:"sarajevo",n:"Casa El Gitano",t:"short drive",m:0,note:"Breakfast and pljeskavica.",meta:"Paromlinska 34, +387 33 950-753"},
+{c:"eat",b:"sarajevo",n:"ETA Burgers",t:"centre",m:0,note:"Smash burgers, and the favourite pala\u010dinke with Ferrero.",meta:"Radi\u0107eva 4a, +387 33 879-238"},
+{c:"eat",b:"sarajevo",n:"\u0160ah Mat Burger",t:"in the bazaar",m:0,note:"Decent burgers but small. Tiny, cash only.",meta:"\u0106ur\u010diluk veliki 63, +387 62 114 400"},
+{c:"eat",b:"sarajevo",n:"Terra",t:"centre",m:0,note:"Good pizza.",meta:"Radi\u0107eva 4c, closed Sun, +387 62 228 911"},
+{c:"eat",b:"sarajevo",n:"Nostra Cucina",t:"centre",m:0,note:"Italian.",meta:"Mar\u0161ala Tita 54, +387 33 830-730"},
+{c:"eat",b:"sarajevo",n:"Restoran Tavola",t:"centre",m:0,note:"Italian, the other one.",meta:"Mar\u0161ala Tita 50, closed Sun, +387 33 222-207"},
+{c:"eat",b:"sarajevo",n:"Gastro Pub Vu\u010dko",t:"centre",m:0,note:"1984 Olympics theme, popular, reserve ahead.",meta:"Radi\u0107eva 10, +387 33 208-028"},
+{c:"eat",b:"sarajevo",n:"Pivnica HS",t:"by the brewery",m:0,note:"Brewery hall at Sarajevska Pivara.",meta:"Franjeva\u010dka 15, closed Sun, +387 61 488 019"},
+{c:"eat",b:"sarajevo",n:"Restoran Toplik",t:"outside the city, Isto\u010dno Sarajevo",m:0,note:"Trout farm restaurant. Pick your fish.",meta:"Vuka Karad\u017ei\u0107a 250, Isto\u010dno Sarajevo, +387 57 321-455"},
+{c:"eat",b:"sarajevo",n:"Marshall's Gelato",t:"centre",m:0,note:"Best ice cream and pala\u010dinke in the city.",meta:"Kulovi\u0107a 9, +387 61 100 122"},
+{c:"eat",b:"sarajevo",n:"Baklava Du\u0107an",t:"in the bazaar",m:0,note:"Handmade Bosnian baklava.",meta:"\u010cizmed\u017eiluk 20, +387 61 260 450"},
+{c:"eat",b:"sarajevo",n:"Fistikzade",t:"Ferhadija",m:0,note:"Baklava, the other one.",meta:"Ferhadija, Ba\u0161\u010dar\u0161ija, +387 33 498-123"},
+{c:"eat",b:"sarajevo",n:"Slasti\u010darna Egipat",t:"Ferhadija",m:0,note:"Ice cream and traditional cakes. Order the tufahija.",meta:"Ferhadija 29, +387 33 237-287"},
+{c:"eat",b:"sarajevo",n:"FUKA Specialty Coffee",t:"centre",m:0,note:"Proper coffee, work-friendly.",meta:"\u0106emalu\u0161a 12"},
+{c:"eat",b:"sarajevo",n:"Kawa",t:"centre",m:0,note:"Coffee, fast wifi, quiet work spot.",meta:"D\u017eeneti\u0107a \u010dikma 16, +387 33 742-704"},
+{c:"eat",b:"sarajevo",n:"Backyard Coffee",t:"centre",m:0,note:"Coffee, with a co-working space in the basement.",meta:"Zelenih beretki 3"},
+{c:"eat",b:"sarajevo",n:"G\u00f6n\u00fcl Kahvesi",t:"near the cable car",m:0,note:"Cafe with a city view.",meta:"Timurhanova 3"},
+{c:"eat",b:"visoko",n:"Visoko \u0107evapi",t:"Visoko centre",m:0,note:"Visoko has its own claim to the best \u0107evapi in the country. Test the theory.",meta:"Visoko",q:"cevabdzinica Visoko"},
+{c:"eat",b:"jablanica",n:"Restoran Kova\u010devi\u0107",t:"Donja Jablanica",m:0,note:"Jablanica lamb spit-roasted over a live fire on a terrace above the Neretva. Tres leches and ice cream after. 4.4 stars over 8,000 reviews, halal, cards accepted, open 07:00 to 23:00 daily. Call ahead. The single best meal available on the road.",meta:"Donja Jablanica 88420, +387 36 754-500"},
+{c:"eat",b:"jablanica",n:"The other lamb spits at Jablanica",t:"same stretch of road",m:0,note:"There are several, all doing the same thing. If Kova\u010devi\u0107 is full, nobody suffers.",meta:"Jablanica",q:"janjetina Jablanica"},
+{c:"eat",b:"konjic",n:"Konjic roadside grills",t:"in Konjic",m:0,note:"The backup on the Mostar leg, and a good coffee stop regardless.",meta:"Konjic",q:"restoran Konjic"},
+{c:"do",b:"sarajevo",n:"Ba\u0161\u010dar\u0161ija on foot",t:"in town",m:0,star:1,note:"The bazaar, the coppersmiths' alley, Mori\u0107a Han, the Sebilj. The oldest bazaar in the Balkans. The shops close on Sunday.",meta:"Ba\u0161\u010dar\u0161ija, Sarajevo"},
+{c:"do",b:"sarajevo",n:"Tunnel of Hope",t:"20 min by car, out by the airport",m:20,star:8,note:"The hand-dug tunnel under the runway that kept the city alive through the siege. Take a guide. Cash only, book online in season.",meta:"Tuneli 1, Sarajevo, +387 33 684-032"},
+{c:"do",b:"sarajevo",n:"Gallery 11/07/95",t:"centre",m:0,note:"The Srebrenica exhibition. Take the audio guide.",meta:"Trg Fra Grge Marti\u0107a 2, +387 33 953-170"},
+{c:"do",b:"sarajevo",n:"Museum of Crimes Against Humanity and Genocide",t:"centre",m:0,note:"Heavy but important.",meta:"Muvekita 11, +387 62 052 058"},
+{c:"do",b:"sarajevo",n:"War Childhood Museum",t:"Logavina",m:0,note:"The siege told through objects children kept. The most affecting of the three.",meta:"Logavina 32, +387 33 535-558"},
+{c:"do",b:"sarajevo",n:"Siege of Sarajevo Museum",t:"centre",m:0,note:"A combo ticket covers three war museums over three days.",meta:"Jeli\u0107a 3, +387 61 906 942"},
+{c:"do",b:"sarajevo",n:"Vije\u0107nica",t:"by the river",m:0,note:"The Austro-Hungarian city hall, burned with the national library inside it in 1992, reopened in 2014.",meta:"Vije\u0107nica, Sarajevo"},
+{c:"do",b:"sarajevo",n:"Latin Bridge",t:"central",m:0,note:"Where Franz Ferdinand was shot in 1914, with the museum on the corner.",meta:"Latin Bridge, Sarajevo"},
+{c:"do",b:"sarajevo",n:"Eternal Flame",t:"end of Ferhadija",m:0,note:"WWII memorial where Ferhadija meets Mar\u0161ala Tita.",meta:"Vje\u010dna vatra, Sarajevo"},
+{c:"do",b:"sarajevo",n:"Gun range, Streli\u0161te \u017du\u010d, SK4Tactic",t:"drive out",m:15,note:"Shooting range. Open Tue, Fri, Sat only, so check before driving out.",meta:"Vladimira Preloga, +387 61 900 554"},
+{c:"do",b:"sarajevo",n:"Kino Bosna",t:"Alipa\u0161ina",m:0,note:"Kafana with live Bosnian music, Monday and Thursday nights only. Cash. Locals, not tourists.",meta:"Alipa\u0161ina 19, +387 61 866 946"},
+{c:"do",b:"sarajevo",n:"Sloga",t:"centre",m:0,note:"Club, if you like going out.",meta:"Mehmeda Spahe 20, closed Tue, Wed, Sun, +387 33 218-811"},
+{c:"do",b:"visoko",n:"Visoko and the Ravne tunnels",t:"in Visoko",m:0,note:"The pyramid claims. Atmospheric tunnels, contested archaeology, and a decent old town.",meta:"Ravne, Visoko"},
+{c:"do",b:"visoko",n:"Kraljeva Sutjeska",t:"35 min off the M17, near Kakanj",m:35,note:"The medieval royal court and one of the oldest Franciscan monasteries in the country, for the pre-Ottoman half of the story.",meta:"Kraljeva Sutjeska, Kakanj"},
+{c:"do",b:"konjic",n:"Konjic Old Bridge",t:"in Konjic",m:0,note:"Ottoman stone bridge of 1682, destroyed in 1945 and rebuilt from the original drawings in 2009.",meta:"Stara \u0107uprija, Konjic"},
+{c:"do",b:"konjic",n:"Tito's nuclear bunker, ARK D-0",t:"15 min off the route at Konjic",m:15,note:"A 6,500 sq m underground command complex built in secret over 26 years. Needs advance booking.",meta:"ARK D-0, Konjic"},
+{c:"do",b:"konjic",n:"Rafting on the Neretva",t:"from Konjic",m:0,note:"Half day, if you want to break the drive with something physical.",meta:"Konjic",q:"rafting Neretva Konjic"},
+{c:"do",b:"jablanica",n:"Jablanica sunken bridge and Battle of the Neretva museum",t:"in Jablanica",m:0,note:"The bridge the Partisans blew themselves in 1943, still twisted in the river. Twenty minutes, and right beside the lamb.",meta:"Jablanica"},
+{c:"do",b:"jablanica",n:"Via Ferrata Prenjska Vrata",t:"from Jablanica",m:0,note:"Kayak across the lake to reach the start.",meta:"Prenjska Vrata, Jablanica"},
+{c:"islam",b:"sarajevo",n:"Gazi Husrev-beg Mosque",t:"in the bazaar",m:0,star:1,note:"Built 1531, the heart of Bosnian Islam. Jummah here fills, so arrive by 12:15.",meta:"Sara\u010di 8, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Kur\u0161umli Madrasa",t:"in the bazaar",m:0,note:"Same 1531 endowment, teaching for nearly 500 years.",meta:"Sara\u010di, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Gazi Husrev-beg Hanikah",t:"in the bazaar",m:0,note:"The dervish lodge of the same vakuf, among the oldest Sufi institutions in Bosnia, now part of the Faculty of Islamic Studies.",meta:"Sara\u010di, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Gazi Husrev-beg Library",t:"in the bazaar",m:0,note:"The manuscript collection that survived the siege.",meta:"Gazi Husrev-begova biblioteka, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Turbes of Gazi Husrev-beg and Murad-beg",t:"mosque courtyard",m:0,note:"The founder's tomb and his freedman's.",meta:"Gazi Husrev-begova d\u017eamija, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Careva D\u017eamija",t:"across the Miljacka",m:0,note:"The Emperor's Mosque, 1457, the oldest in the city.",meta:"Careva d\u017eamija, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Ali-pa\u0161a's Mosque",t:"on the walk west",m:0,note:"1561, between the old town and the Austrian quarter.",meta:"Alipa\u0161ina d\u017eamija, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Ferhadija Mosque",t:"on the walk west",m:0,note:"Also 1561, on the same stretch.",meta:"Ferhadija d\u017eamija, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Ba\u0161\u010dar\u0161ija Mosque and the Sebilj",t:"on the square",m:0,note:"The small mosque that gives the square its name, and the wooden fountain rebuilt in 1891.",meta:"Ba\u0161\u010dar\u0161ijska d\u017eamija, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Brusa Bezistan and the Gazi Husrev-beg Bezistan",t:"in the bazaar",m:0,note:"Two Ottoman covered markets, one of them now a museum.",meta:"Brusa bezistan, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Mori\u0107a Han",t:"in the bazaar",m:0,note:"The last working caravanserai in the city.",meta:"Mori\u0107a Han, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Svrzo House",t:"short walk up",m:0,note:"A preserved 18th century Ottoman family house, showing how the divided quarters actually worked.",meta:"Svrzina ku\u0107a, Glo\u0111ina 8, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Had\u017ei Sinanova Tekija",t:"Sagrd\u017eije",m:0,note:"Qadiri lodge of 1638 to 1640, the best preserved tekke in the city and still a living community. Late afternoon, modest dress, ask before entering.",meta:"Sagrd\u017eije, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Isa-beg's tekija site",t:"Bendba\u0161a",m:0,note:"Site of the 1462 Mevlevi lodge, the first in the Balkans.",meta:"Bendba\u0161a, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Sedam Bra\u0107e turbe",t:"Bistrik",m:0,note:"A small local shrine with a long popular devotion attached.",meta:"Sedam bra\u0107e, Bistrik, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Sahat Kula, Sarajevo",t:"beside the Begova mosque",m:0,note:"The Ottoman clock tower, still keeping lunar time.",meta:"Sahat kula, Sarajevo"},
+{c:"islam",b:"sarajevo",n:"Tekija Oglavak and Fojnica",t:"1h west",m:60,note:"A Naqshbandi lodge almost no visitor reaches.",meta:"Oglavak, Fojnica"},
+{c:"islam",b:"visoko",n:"\u0160arena and Tabhanska Mosques, Visoko",t:"Visoko centre",m:0,note:"Visoko's two Ottoman mosques, alongside the old town.",meta:"\u0160arena d\u017eamija, Visoko"},
+{c:"nature",b:"sarajevo",n:"Trebevi\u0107 cable car",t:"10 min walk to the base station",m:0,star:9,note:"Nine minutes to 1,160 m. Go early, it gets busy. Cafe at the top and the abandoned bobsled track with its graffiti.",meta:"Hrvatin bb, Sarajevo, +387 33 246-573"},
+{c:"nature",b:"sarajevo",n:"Yellow Fortress, \u017duta Tabija",t:"20 min steep walk from the bazaar",m:0,star:9,note:"Free. Sunset over the minarets, and the best view of the trip. Hold hands, cute.",meta:"Jekovac, Sarajevo"},
+{c:"nature",b:"sarajevo",n:"Park Prin\u010deva",t:"hillside",m:0,note:"The food is not good. Go for drinks and the view only.",meta:"Iza Hrida 7, Sarajevo, +387 61 222 708"},
+{c:"nature",b:"sarajevo",n:"Lukomir and Umoljani",t:"1h30 each way, a full day",m:90,star:10,note:"The highest village in Bosnia at 1,450 m, on the rim of the Rakitnica canyon. Rough final stretch, daylight both ways, take food and water. It empties for winter from about early October.",meta:"Lukomir, Bjela\u0161nica"},
+{c:"nature",b:"sarajevo",n:"Vrelo Bosne",t:"30 min",m:30,note:"Springs park at the foot of Igman with an avenue of plane trees and horse carriages. The soft option, and the wet-weather substitute for Lukomir.",meta:"Vrelo Bosne, Ilid\u017ea"},
+{c:"nature",b:"sarajevo",n:"Skakavac waterfall",t:"45 min north",m:45,note:"A 98 m fall in the hills above the city, with a short forest walk in.",meta:"Skakavac, Sarajevo"},
+{c:"nature",b:"sarajevo",n:"Bijambare caves",t:"45 min north",m:45,note:"Caves and a picnic forest, easy and slow-paced.",meta:"Bijambare"},
+{c:"nature",b:"konjic",n:"Bora\u010dko Lake",t:"20 min off the route at Konjic",m:20,note:"Glacial lake with a beach, and the quietest swim on this leg.",meta:"Bora\u010dko jezero, Konjic"},
+{c:"nature",b:"jablanica",n:"Dre\u017enica canyon",t:"15 min off the M17, past Jablanica",m:45,note:"Green side canyon with swimming holes and almost no visitors. Narrow road, drive slowly. A couple of simple places to eat by the water.",meta:"Dre\u017enica"},
+{c:"relax",b:"sarajevo",n:"Vilsonovo \u0160etali\u0161te",t:"riverside",m:0,note:"The riverside promenade, for a walk with no destination.",meta:"Vilsonovo \u0161etali\u0161te, Sarajevo"},
+{c:"relax",b:"sarajevo",n:"A slow coffee morning",t:"Kawa, Backyard or FUKA",m:0,note:"Coffee and no plan.",meta:"Kawa, Sarajevo",q:"Kawa Dzenetica cikma Sarajevo"},
+{c:"relax",b:"sarajevo",n:"Thermal spa at Hotel Hills, Ilid\u017ea",t:"drive out to Ilid\u017ea",m:25,note:"If anyone wants a proper pool and sauna day.",meta:"Hotel Hills, Ilid\u017ea"},
+{c:"shisha",b:"sarajevo",n:"Dibek",t:"Ba\u0161\u010dar\u0161ija",m:0,note:"The famous one. Outdoor courtyard, low sofas, live music some nights, packed after 21:00. Shisha and drinks only, no alcohol. Go once even if you end up preferring somewhere quieter.",meta:"Luled\u017eina 3, Sarajevo"},
+{c:"shisha",b:"sarajevo",n:"Nargila & Tea Bar Culhan",t:"heart of Ba\u0161\u010dar\u0161ija",m:0,note:"Consistently rated the best shisha cafe in the old town. Traditional feel, teas, busy.",meta:"Ba\u0161\u010dar\u0161ija, Sarajevo"},
+{c:"shisha",b:"sarajevo",n:"Hookah Lounge Babos",t:"central",m:0,note:"Open around the clock, long flavour list, heavy local following. The one for a late night.",meta:"M.M. Ba\u0161eskije, Sarajevo"},
+{c:"shisha",b:"sarajevo",n:"Secret Hookah Lounge",t:"Kundurd\u017eiluk",m:0,note:"About 9 KM a pipe, air conditioned, English spoken. Reliable.",meta:"Kundurd\u017eiluk, Sarajevo"},
+{c:"shisha",b:"sarajevo",n:"Hookah Lounge Factory",t:"A\u0161\u010diluk 5",m:0,note:"Central and easy, good for a night you get back late.",meta:"A\u0161\u010diluk 5, Sarajevo"},
+{c:"shisha",b:"sarajevo",n:"Hookah bar Istanbul",t:"Kundurd\u017eiluk",m:0,note:"The one to walk to after the Yellow Fortress.",meta:"Kundurd\u017eiluk, Sarajevo"},
+{c:"shisha",b:"sarajevo",n:"Caffe bar Retro Ba\u0161\u010dar\u0161ija",t:"Ba\u0161\u010dar\u0161ija",m:0,note:"Coffee and nargila together, homely rather than loud.",meta:"Ba\u0161\u010dar\u0161ija, Sarajevo"},
+{c:"shisha",b:"sarajevo",n:"Nargila Caffe Bar Libris",t:"side street off the centre",m:0,note:"Cheapest prices in town, quiet before 20:00 and crowded after. Backgammon and TV sport.",meta:"Sarajevo",q:"Nargila Caffe Bar Libris Sarajevo"},
+{c:"shisha",b:"sarajevo",n:"Shisha-Hookah Bar D\u017eentlmen",t:"central",m:0,note:"Small, private, off the tourist track, cheap.",meta:"Sarajevo",q:"Shisha Hookah Bar Dzentlmen Sarajevo"},
+
+/* ============ MOSTAR & AROUND ============ */
+{c:"eat",b:"mostar",n:"Restaurant \u0160adrvan",t:"a minute from the bridge",m:0,note:"Traditional Herzegovinian, the national platter. The default, and a good one.",meta:"Jusovina 11, Mostar, +387 61 891 189"},
+{c:"eat",b:"mostar",n:"Hindin Han",t:"on the water",m:0,note:"Traditional, quieter than \u0160adrvan.",meta:"Jusovina bb, Mostar, +387 36 581-054"},
+{c:"eat",b:"mostar",n:"Urban Taste of Orient",t:"old town",m:0,note:"Terrace overlooking the Old Bridge. Expect a wait. Pay for the view once.",meta:"Mala Tepa 22, Mostar, +387 36 552-235"},
+{c:"eat",b:"mostar",n:"Bijeli Bar",t:"old town",m:0,note:"Drinks with a bridge view. Cash only, and check prices before you order.",meta:"Mar\u0161ala Tita, Mostar, +387 66 005-544"},
+{c:"eat",b:"mostar",n:"Caffe bar Nide Veze",t:"riverside",m:0,note:"Big portions, low prices, food and hookah in the same place. Locals eat here.",meta:"Mostar",q:"Caffe bar Nide Veze Mostar"},
+{c:"eat",b:"mostar",n:"Blagaj riverside restaurants",t:"at the Buna spring, 20 min",m:20,note:"Trout, eaten beside the source under the tekija. One of the best settings in the country.",meta:"Blagaj, Mostar",q:"restoran Vrelo Bune Blagaj"},
+{c:"eat",b:"mostar",n:"Bakeries and burek on Mar\u0161ala Tita",t:"new town",m:0,note:"Cheap, quick, and away from the old town mark-up.",meta:"Mar\u0161ala Tita, Mostar",q:"pekara Mostar"},
+{c:"eat",b:"pocitelj",n:"Po\u010ditelj stalls",t:"bottom of the village",m:0,note:"Dried figs, pomegranate juice, honey. Not a meal, but buy some anyway.",meta:"Po\u010ditelj"},
+{c:"eat",b:"capljina",n:"\u010capljina lunch",t:"in \u010capljina",m:0,note:"Last easy inland town for a proper cheap lunch before coastal prices.",meta:"\u010capljina",q:"restoran Capljina"},
+{c:"do",b:"mostar",n:"Stari Most and Kujund\u017eiluk",t:"in town",m:0,star:2,note:"Be on the bridge by 08:00 if you want it without the crowds. The divers jump through the day once the hat is full.",meta:"Stari Most, Mostar"},
+{c:"do",b:"mostar",n:"Koski Mehmed-pa\u0161a minaret climb",t:"old town",m:0,note:"Climb it. The definitive photograph of the bridge is from up there.",meta:"Koski Mehmed-pa\u0161ina d\u017eamija, Mostar"},
+{c:"do",b:"mostar",n:"Old Bridge Museum, Tara tower",t:"old town",m:0,note:"The engineering of the 1566 arch and the 2004 rebuild.",meta:"Stari Most, Mostar"},
+{c:"do",b:"mostar",n:"Boat under the Old Bridge",t:"below the bridge",m:0,note:"Taxi boats from Kapetanovina, about ten minutes on the water.",meta:"Kapetanovina bb, Mostar"},
+{c:"do",b:"mostar",n:"Museum of War and Genocide Victims",t:"old town",m:0,note:"Small, direct, difficult.",meta:"Mostar"},
+{c:"do",b:"mostar",n:"Sniper Tower",t:"near \u0160panski trg",m:0,note:"Abandoned bank tower covered in graffiti with a view over the city. Go inside for the graffiti, at your own risk, proper shoes.",meta:"Sniper Tower, Mostar"},
+{c:"do",b:"mostar",n:"Partisan Memorial Cemetery",t:"west bank",m:0,note:"A vast brutalist memorial complex, half ruined and entirely deserted.",meta:"Partizansko spomen-groblje, Mostar"},
+{c:"do",b:"mostar",n:"Medjugorje",t:"30 min",m:30,note:"The Catholic pilgrimage site. Interesting as a phenomenon if nothing else.",meta:"Medjugorje"},
+{c:"do",b:"stolac",n:"Stolac and the Radimlja necropolis",t:"in Stolac",m:0,note:"A UNESCO field of medieval ste\u0107ci tombstones, and the Vido\u0161ka fortress above the town.",meta:"Radimlja, Stolac"},
+{c:"do",b:"mostar",n:"Vjetrenica cave, Ravno",t:"1h",m:60,note:"The largest cave system in the country. Book ahead.",meta:"Vjetrenica, Ravno"},
+{c:"islam",b:"mostar",n:"Stari Most",t:"in town",m:0,star:2,note:"Mimar Hayruddin, a pupil of Sinan, 1566. A single 28.7 m arch that stood 427 years, destroyed 9 November 1993, rebuilt with Ottoman technique and reopened 2004. UNESCO.",meta:"Stari Most, Mostar"},
+{c:"islam",b:"mostar",n:"Koski Mehmed-pa\u0161a Mosque",t:"old town",m:0,note:"1618, with the minaret you can climb and a courtyard over the river.",meta:"Koski Mehmed-pa\u0161ina d\u017eamija, Mostar"},
+{c:"islam",b:"mostar",n:"Karado\u017e-beg Mosque",t:"old town",m:0,note:"1557, Mostar's largest and architecturally its finest, built by the Sinan school for the grand vizier's brother.",meta:"Karado\u017ebegova d\u017eamija, Mostar"},
+{c:"islam",b:"mostar",n:"Cejvan \u0106ehaja Mosque",t:"old town",m:0,note:"1552, the oldest in the city.",meta:"Cejvan \u0106ehajina d\u017eamija, Mostar"},
+{c:"islam",b:"mostar",n:"Ro\u017enamed\u017ei Ibrahim-efendija Mosque",t:"old town",m:0,note:"One of the Ottoman mosques most visitors walk straight past.",meta:"Ro\u017enamed\u017eijina d\u017eamija, Mostar"},
+{c:"islam",b:"mostar",n:"Nesuh-aga Vu\u010djakovi\u0107 Mosque",t:"old town",m:0,note:"The other one most visitors miss.",meta:"Vu\u010djakovi\u0107a d\u017eamija, Mostar"},
+{c:"islam",b:"mostar",n:"Kriva \u0106uprija",t:"old town",m:0,note:"The Crooked Bridge, a smaller arch of 1558 that was the trial run for Stari Most.",meta:"Kriva \u0106uprija, Mostar"},
+{c:"islam",b:"mostar",n:"Muslibegovi\u0107 House",t:"old town",m:0,note:"A preserved 18th century Ottoman family house, now also a hotel, that you can walk through.",meta:"Muslibegovi\u0107 House, Mostar"},
+{c:"islam",b:"mostar",n:"Bi\u0161\u010devi\u0107a \u0106o\u0161ak",t:"old town",m:0,note:"Another Ottoman house, cantilevered out over the Neretva.",meta:"Bi\u0161\u010devi\u0107a ku\u0107a, Mostar"},
+{c:"islam",b:"mostar",n:"Hammam Museum",t:"old town",m:0,note:"The restored Ottoman bathhouse.",meta:"Hamam Museum, Mostar"},
+{c:"islam",b:"mostar",n:"Blagaj Tekija",t:"20 min",m:20,star:3,note:"Built about 1520 into the cliff at the source of the Buna. Naqshbandi and Qadiri, and still a working lodge. Go at opening. Small fee, scarves provided, shoes off.",meta:"Blagaj Tekija, Blagaj"},
+{c:"islam",b:"pocitelj",n:"Had\u017ei Alija Mosque and \u0160i\u0161man Ibrahim-pa\u0161a Madrasa, Po\u010ditelj",t:"in the village",m:0,star:6,note:"1563 mosque and madrasa, with the hammam, clock tower and han, all on one hillside.",meta:"Po\u010ditelj"},
+{c:"islam",b:"stolac",n:"\u010car\u0161ija Mosque, Stolac",t:"in Stolac",m:0,note:"Historic town mosque, rebuilt after the war. The nearest Jummah option to Neum, with the Radimlja necropolis alongside.",meta:"\u010car\u0161ijska d\u017eamija, Stolac"},
+{c:"nature",b:"mostar",n:"Kravice Waterfall",t:"40 min west",m:40,star:4,note:"A 120 m semi-circle of tufa falls on the Trebi\u017eat with a swimmable pool underneath. Entry fee, changing facilities. Go before noon.",meta:"Kravice, Ljubu\u0161ki"},
+{c:"nature",b:"mostar",n:"Hutovo Blato",t:"40 min",m:40,note:"Karst wetland and bird reserve, with boat tours.",meta:"Hutovo Blato"},
+{c:"nature",b:"pocitelj",n:"Po\u010ditelj",t:"the village itself",m:0,star:6,note:"A complete Ottoman stone village stacked up a cliff under a hilltop fort. Free, and half an hour is enough. Stone steps up to the fort.",meta:"Po\u010ditelj"},
+{c:"relax",b:"mostar",n:"The boat ride under the bridge",t:"below the bridge",m:0,note:"Ten minutes of doing nothing at water level.",meta:"Kapetanovina, Mostar"},
+{c:"relax",b:"mostar",n:"Kravice",t:"40 min west",m:40,note:"A swim first and a sight second.",meta:"Kravice, Ljubu\u0161ki"},
+{c:"relax",b:"mostar",n:"The Blagaj riverside terraces",t:"20 min",m:20,note:"Trout and the spring in front of you.",meta:"Blagaj"},
+{c:"relax",b:"mostar",n:"A bridge-view terrace at dusk",t:"old town",m:0,note:"Bijeli Bar or any of them, once the coaches have gone.",meta:"Stari Most, Mostar"},
+{c:"relax",b:"mostar",n:"The Neretva banks north of the old town",t:"short walk",m:0,note:"Where nobody goes.",meta:"Mostar"},
+{c:"shisha",b:"mostar",n:"Kairo Hookah Lounge",t:"Mar\u0161ala Tita",m:0,note:"Cheap, free parking, consistently the best reviewed in the city.",meta:"Mar\u0161ala Tita, Mostar"},
+{c:"shisha",b:"mostar",n:"MerAmi Caffe Lounge",t:"Mar\u0161ala Tita 41",m:0,note:"Large, clean, easy parking. Music can be loud.",meta:"Mar\u0161ala Tita 41, Mostar"},
+{c:"shisha",b:"mostar",n:"Ljetna Ba\u0161ta Oskar",t:"old town",m:0,note:"The busy one. Big outdoor area of cushions and sofas under wooden pergolas, young crowd, wide flavour list.",meta:"Mostar old town",q:"Ljetna Basta Oskar Mostar"},
+{c:"shisha",b:"mostar",n:"Nargila bar Nil",t:"Zalik, out of the centre",m:0,note:"Popular with locals. Check the bill against the printed menu.",meta:"Zalik, Mostar"},
+{c:"shisha",b:"mostar",n:"Blasting Lounge",t:"by Stari Most",m:0,note:"The bridge view option. Terrace over the lit-up bridge in the evening.",meta:"Stari Most, Mostar",q:"Blasting Lounge Mostar"},
+{c:"shisha",b:"mostar",n:"Konzulat Hookah Lounge",t:"central",m:0,note:"Newer and quieter, good when the old town is packed.",meta:"Mostar",q:"Konzulat Hookah Lounge Mostar"},
+{c:"shisha",b:"mostar",n:"Caffe bar Nide Veze",t:"riverside",m:0,note:"Food and shisha in the same seat, which some nights is exactly what you want.",meta:"Mostar",q:"Caffe bar Nide Veze Mostar"},
+
+/* ============ NEUM ============ */
+{c:"eat",b:"neum",n:"Grand Hotel half board",t:"in the hotel",m:0,note:"With one night and a late arrival, the low-friction option. Ask at check-in.",meta:"Grand Hotel Neum, Zagreba\u010dka 2"},
+{c:"eat",b:"neum",n:"The seafront konobas",t:"along the front",m:0,note:"Grilled fish, octopus salad, black risotto, squid. Roughly half Croatian prices. Neum is Croat-majority and Catholic, so halal is not the default. Fish is the simple answer, or ask.",meta:"Doktora Franje Tu\u0111mana, Neum",q:"konoba Neum"},
+{c:"eat",b:"neum",n:"CityBar Caffe",t:"seafront",m:0,note:"Coffee and the view rather than a meal. Cash only.",meta:"Neum",q:"CityBar Caffe Neum"},
+{c:"do",b:"neum",n:"Swim and the hotel beach",t:"lift and tunnel from the hotel",m:0,note:"The reason you booked it.",meta:"Grand Hotel Neum"},
+{c:"do",b:"neum",n:"Boat trip along the bay",t:"from the front",m:0,note:"An hour or two on the water.",meta:"Neum",q:"boat trip Neum"},
+{c:"do",b:"neum",n:"Kayak and paddleboard rental",t:"on the front",m:0,note:"For anyone who cannot sit still.",meta:"Neum",q:"kayak rental Neum"},
+{c:"do",b:"neum",n:"Mali Ston, Croatia",t:"40 min",m:40,note:"Oysters and the long defensive walls. Needs the border.",meta:"Mali Ston, Croatia"},
+{c:"do",b:"neum",n:"Dubrovnik",t:"1h15",m:75,note:"Genuinely close, but it is a full day, a border and a crowd, and you have one night here.",meta:"Dubrovnik, Croatia"},
+{c:"do",b:"neum",n:"Zadar",t:"about 2h45 into the Friday drive, 20 min off",m:165,note:"The Sea Organ and the old town, if the group wants a real break rather than a service station.",meta:"Zadar, Croatia"},
+{c:"islam",b:"neum",n:"Nothing in Neum itself",t:"the one gap on the route",m:null,note:"The town is Croat-majority and Catholic with no significant mosque. Nearest options: \u010capljina about 45 min inland, or Stolac about 50 min with the Radimlja necropolis alongside.",meta:"Neum"},
+{c:"islam",b:"capljina",n:"\u010capljina town mosque",t:"in \u010capljina",m:0,note:"The nearest town mosque to Neum, and the practical Jummah option if you are here on a Friday.",meta:"d\u017eamija \u010capljina"},
+{c:"nature",b:"neum",n:"Coastal walk south out of town",t:"on foot",m:0,note:"Twenty minutes and the crowds vanish.",meta:"Neum"},
+{c:"nature",b:"neum",n:"Maslenica bridge viewpoint",t:"about 2h30 into the Friday drive, on the A1",m:150,note:"The big arch over the Novigrad Sea, with a rest area at the view.",meta:"Maslenica bridge, Croatia"},
+{c:"relax",b:"neum",n:"The whole stop",t:"Neum itself",m:0,note:"The correct use of Neum: arrive early, get in the sea, use the rooftop pool and the spa, eat, and sleep.",meta:"Grand Hotel Neum"},
+{c:"relax",b:"neum",n:"The hotel terrace after dark",t:"in the hotel",m:0,note:"With the bay lit up.",meta:"Grand Hotel Neum"},
+{c:"shisha",b:"neum",n:"Malibu Nargila Bar",t:"on the front",m:0,note:"The best and cheapest nargila in Neum, and good iced coffee.",meta:"Doktora Franje Tu\u0111mana 1, Neum"},
+{c:"shisha",b:"neum",n:"CityBar Caffe",t:"seafront",m:0,note:"For the view. Cash only.",meta:"Neum",q:"CityBar Caffe Neum"},
+{c:"shisha",b:"neum",n:"Cocktail bar Lungo Mare",t:"on the front",m:0,note:"Swimming platform right in front of it.",meta:"Lungo Mare, Neum"}
+];
+
+/* ---------- shortest paths over the leg graph ---------- */
+const NODESET = new Set(); EDGES.forEach(e=>{NODESET.add(e[0]);NODESET.add(e[1]);});
+const ADJ = {}; NODESET.forEach(n=>ADJ[n]=[]);
+EDGES.forEach(([a,b,w])=>{ADJ[a].push([b,w]);ADJ[b].push([a,w]);});
+function dists(src){
+  const d={}; NODESET.forEach(n=>d[n]=Infinity); d[src]=0;
+  const seen=new Set();
+  while(seen.size<NODESET.size){
+    let u=null,best=Infinity;
+    NODESET.forEach(n=>{if(!seen.has(n)&&d[n]<best){best=d[n];u=n;}});
+    if(u===null)break; seen.add(u);
+    ADJ[u].forEach(([v,w])=>{if(d[u]+w<d[v])d[v]=d[u]+w;});
+  }
+  return d;
+}
+const DIST={}; ["zagreb","bihac","travnik","sarajevo","mostar","neum","krupa"].forEach(k=>DIST[k]=dists(k));
+
+function fmt(mins){
+  if(mins<60)return mins+" min";
+  const h=Math.floor(mins/60), m=mins%60;
+  return h+"h"+(m?String(m).padStart(2,"0"):"");
+}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function mapsUrl(it){
+  const q=it.q?it.q:(it.n+", "+(it.meta?it.meta.split(",").slice(0,2).join(","):AREA[it.b]+", Bosnia and Herzegovina"));
+  const r=RATINGS[it.n];
+  let u="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
+  if(r&&r[2])u+="&query_place_id="+r[2];
+  return u;
+}
+const STARTIP={1:"No. 1 on the most-popular list",2:"No. 2 most popular",3:"No. 3 most popular",4:"No. 4 most popular",5:"No. 5 most popular",6:"No. 6 most popular",7:"No. 7 most popular",8:"No. 8 most popular",9:"No. 9 most popular",10:"No. 10 most popular",11:"No. 11 most popular"};
+
+/* ---------- state + render ---------- */
+let loc="bihac", cat="eat";
+
+function renderRoute(){
+  document.getElementById("route").innerHTML = LOCS.map(l=>
+    '<button class="stop" aria-pressed="'+(l.k===loc)+'" data-k="'+l.k+'">'+
+    '<span class="dotline"><span class="dot"></span><span class="rail"></span></span>'+
+    '<span class="city">'+l.city+'</span><br><span class="when">'+l.when+'</span></button>'
+  ).join("");
+}
+function renderCats(){
+  document.getElementById("cats").innerHTML = CATS.map(c=>
+    '<button class="cat" aria-pressed="'+(c.k===cat)+'" data-k="'+c.k+'">'+c.label+'</button>'
+  ).join("");
+}
+function renderBed(){
+  const l=LOCS.find(x=>x.k===loc);
+  const legs=LEGS.filter(g=>g.at.includes(loc)).map(g=>
+    "<div><b>"+g.d+"</b> "+esc(g.t)+", "+g.km+" km, "+g.time+". "+esc(g.n)+"</div>"
+  ).join("");
+  const hs=(HERO[loc]||[]).map(commons);
+  const img=hs.length?'<img class="bedimg" src="'+hs[0]+'" data-srcs="'+hs.join("|")+'" data-label="'+esc(l.city)+'" alt="'+esc(l.city)+'" loading="lazy" onerror="imgStep(this)">':"";
+  document.getElementById("bed").innerHTML =
+    '<div class="bed fadein">'+img+'<div class="top"><span class="prop">'+esc(l.bed.prop)+'</span>'+
+    '<span class="paid'+(l.bed.warn?' warn':'')+'">'+esc(l.bed.paid)+'</span></div>'+
+    '<p>'+esc(l.bed.note)+'</p>'+
+    (legs?'<div class="legs">'+legs+'</div>':'')+'</div>';
+}
+function chipFor(it){
+  if(it.b===loc){
+    if(it.m===0||it.m===null)return esc(it.t);
+    return esc(it.t);
+  }
+  if(it.ov&&it.ov[loc]!==undefined)return fmt(it.ov[loc])+" drive";
+  if(it.m===null)return esc(it.t);
+  const base=DIST[loc][it.b];
+  if(base===undefined||!isFinite(base))return esc(it.t);
+  return "\u2248 "+fmt(base+it.m)+" drive";
+}
+function sortKey(it){
+  if(it.b===loc)return (it.m===null?0:it.m);
+  if(it.ov&&it.ov[loc]!==undefined)return it.ov[loc];
+  if(it.m===null)return 9000;
+  const base=DIST[loc][it.b];
+  return (isFinite(base)?base:9000)+(it.m||0);
+}
+function itemHtml(it){
+  const area = it.b===loc ? "" : '<span class="area">'+AREA[it.b]+'</span>';
+  const star = it.star ? '<span class="star" title="'+STARTIP[it.star]+'">\u2605</span>' : "";
+  const r = RATINGS[it.n];
+  const rate = r ? '<span class="rate" title="Google rating, September 2026">\u2605 '+r[0].toFixed(1)+' <small>('+r[1]+')</small></span>' : "";
+  return '<div class="item"><div class="name">'+esc(it.n)+star+area+rate+'</div>'+
+    '<div class="side"><span class="chip">'+chipFor(it)+'</span></div>'+
+    (it.note?'<div class="note">'+esc(it.note)+'</div>':'')+
+    (it.meta?'<div class="meta">'+esc(it.meta)+'</div>':'')+
+    '<a class="mapbtn" target="_blank" rel="noopener" href="'+mapsUrl(it)+'">'+(r?'Maps and reviews':'Open in Maps')+'</a></div>';
+}
+function renderList(){
+  const l=LOCS.find(x=>x.k===loc);
+  const here=D.filter(it=>it.c===cat&&it.b===loc).sort((a,b)=>sortKey(a)-sortKey(b));
+  const away=D.filter(it=>it.c===cat&&it.b!==loc).sort((a,b)=>sortKey(a)-sortKey(b));
+  let html="";
+  if(here.length)html+='<div class="grouphead">In and around '+l.city+'</div>'+here.map(itemHtml).join("");
+  if(away.length)html+='<div class="grouphead">Further afield, nearest first</div>'+away.map(itemHtml).join("");
+  if(!here.length&&!away.length)html='<p class="empty">Nothing filed here yet.</p>';
+  const el=document.getElementById("list");
+  el.innerHTML='<div class="fadein">'+html+'</div>';
+}
+function renderAll(){renderRoute();renderCats();renderBed();renderList();}
+
+document.getElementById("route").addEventListener("click",e=>{
+  const b=e.target.closest(".stop"); if(!b)return; loc=b.dataset.k; renderAll();
+});
+document.getElementById("cats").addEventListener("click",e=>{
+  const b=e.target.closest(".cat"); if(!b)return; cat=b.dataset.k; renderCats(); renderList();
+});
+renderAll();
+</script>
+</body>
+</html>
